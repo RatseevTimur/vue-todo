@@ -5,7 +5,7 @@
             <div class="view">
                 <input class="toggle" type="checkbox">
                 <label>{{task.text}}</label>
-                <button class="destroy"></button>
+                <button class="destroy" v-on:click="removeTask(task)"></button>
             </div>
         </li>
     </ul>
@@ -17,7 +17,12 @@
 export default {
     props: {tasks: {default: []}},
     name: 'TaskList',
-    components: {}
+    components: {},
+    methods: {
+        removeTask: function(task) {
+            this.tasks.splice(this.tasks.indexOf(task), 1);
+        }
+    }
 }
 
 </script>
