@@ -16,7 +16,7 @@
         <section class="main">
             <input class="toggle-all" type="checkbox" />
             <label for="toggle-all"></label>
-            <TaskList :tasks="tasks"/>
+            <TaskList :tasks="tasks" :removeTask="removeTask"/>
           </section>
       </div>
     </section>
@@ -38,6 +38,9 @@ export default {
   },
 
   methods: {
+    removeTask: function(task) {
+      this.tasks.splice(this.tasks.indexOf(task), 1);
+    },
     createNewId() {
       let maxId = Math.max(...this.tasks.map(i => i.id));
       let newId = (maxId > 0) ? maxId+1 : 1

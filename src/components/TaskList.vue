@@ -4,8 +4,9 @@
         <li v-for="task in tasks" :key="task.id" class="">
             <div class="view">
                 <input class="toggle" type="checkbox">
-                <label>{{task.text}}</label>
-                <button class="destroy" v-on:click="removeTask(task)"></button>
+                <label >{{task.text}}</label>
+        
+                <button class="destroy" @click="removeTask(task)"></button>
             </div>
         </li>
     </ul>
@@ -15,14 +16,13 @@
 <script>
 
 export default {
-    props: {tasks: {default: []}},
+    props: {tasks: {default: []},
+    removeTask:{
+        type: Function
+    }},
     name: 'TaskList',
     components: {},
-    methods: {
-        removeTask: function(task) {
-            this.tasks.splice(this.tasks.indexOf(task), 1);
-        }
-    }
+    methods: {}
 }
 
 </script>
