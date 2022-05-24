@@ -2,29 +2,28 @@
 
     <ul class="todo-list">
         <li
-        class="todo" 
-        v-for="task in tasks" 
-        :key="task.id"
-        :class="{completed: task.completed, editing: inputId == task.id }" >
-            <div class="view">
-                <input class="toggle" type="checkbox" v-model="task.completed">
-                
-                <label @dblclick="editorTask(task)"
-                @click='taskFocus'>
-                    {{task.text}}
-                </label>
+            v-for="task in tasks" 
+            :key="task.id"
+            :class="{completed: task.completed, editing: inputId == task.id }" >
+                <div class="view">
+                    <input class="toggle" type="checkbox" v-model="task.completed">
+                    
+                    <label @dblclick="taskFocus(task)">
+                        {{task.text}}
+                    </label>
 
-                <button class="destroy" @click="removeTask(task)"></button>
-            </div>
-             <input
-                ref="task"
-                              
-                type="text"
-                v-model="task.text"
-                @blur="enterEditor(task)"
-                @keyup.enter="enterEditor(task)"
-                @keyup.esc="exitEditor(task)"
-            />
+                    <button class="destroy" @click="removeTask(task)"></button>
+                </div>
+
+                <input
+                    class = "edit"
+                    v-if="inputId == task.id"
+                    :ref="'taskInput' + task.id" 
+                    v-model="task.text"
+                    @blur="enterEditor(task)"
+                    @keyup.enter="enterEditor(task)"
+                    @keyup.esc="exitEditor(task)"
+                />
         </li>
     </ul>
  
@@ -34,11 +33,10 @@
 
 export default {
     data(){
-        return{
-        inputId: null
-        }
+        return{}
     },
     props: {
+        inputId:{},
         tasks: {default: []},
         removeTask:{
             type: Function
@@ -51,16 +49,14 @@ export default {
         },
         exitEditor: {
             type: Function
-        }   
+        },
+        taskFocus: {
+            type: Function
+        }
     },
     name: 'TaskList',
     components: {},
-    methods: {
-        "taskFocus": function(){
-            console.log("Focus сработал",this.$refs.task)
-            this.$refs.task.focus();
-        }
-    }
+    methods: {}
 }
 
 </script>

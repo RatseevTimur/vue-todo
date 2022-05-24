@@ -24,6 +24,7 @@
             :enterEditor="enterEditor"
             :exitEditor="exitEditor"
             :inputId="inputId"
+            :taskFocus="taskFocus"
             />
           </section>
       </div>
@@ -43,13 +44,19 @@ export default {
       tasks: [],
       newTask: "",
       inputId: null,
+      beforeEditCache: null
     }
   },
 
   methods: {
+    taskFocus: function (task) {
+      this.inputId = task.id
+      this.beforeEditCache = task.text
+      this.$refs['taskInput' + task.id][0].focus();
+    },
     editorTask: function(task) {
       this.beforeEditCache = task.text;
-      this.inputId = task.text;
+      this.inputId = task.id;
     },
 
     enterEditor: function(task) {
@@ -63,8 +70,9 @@ export default {
     },
 
     exitEditor: function(task) {
-      this.inputId = task.text;
+      this.inputId = null;
       task.text = this.beforeEditCache;
+
     },
 
     removeTask: function(task) {
