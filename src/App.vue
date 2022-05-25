@@ -22,7 +22,8 @@
             :removeTask="removeTask"
             :enterEditor="enterEditor"
             :exitEditor="exitEditor"
-            
+            :editorTask="editorTask"
+            :inputId="inputId"
             />
           </section>
       </div>
@@ -41,12 +42,16 @@ export default {
     return{
       tasks: [],
       newTask: "",
-      //inputId: null,
-      //beforeEditCache: null
+      inputId: null,
+      beforeEditCache: null
     }
   },
 
   methods: {
+    editorTask: function(task) {
+      this.beforeEditCache = task.text;
+      this.inputId = task.id;
+    },
     enterEditor: function(task) {
       if (!this.inputId) {
       return;

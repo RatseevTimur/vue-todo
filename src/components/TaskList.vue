@@ -8,7 +8,7 @@
                 <div class="view">
                     <input class="toggle" type="checkbox" v-model="task.completed">
                     
-                    <label @dblclick="taskEditor(task)">
+                    <label @dblclick="editorTask(task) + taskFocus(task)">
                         {{task.text}}
                     </label>
 
@@ -20,9 +20,9 @@
                     v-if="inputId===task.id"
                     :ref="'taskInput' + task.id" 
                     v-model="task.text"
-                    @blur="enterEditor(task)"
-                    @keyup.enter="enterEditor(task)"
-                    @keyup.esc="exitEditor(task)"
+                    @blur="enterEditor(task) + InputNull()"
+                    @keyup.enter="enterEditor(task)+ InputNull()"
+                    @keyup.esc="exitEditor(task)+ InputNull()"
                 />
         </li>
     </ul>
@@ -38,13 +38,7 @@ export default {
             beforeEditCache: null
         }
     },
-    props: {/*
-        inputId:{
-            type: Object
-        },
-        beforeEditCache:{
-            type: Object
-        },*/
+    props: {
         tasks: {default: []},
         removeTask:{
             type: Function
@@ -54,15 +48,22 @@ export default {
         },
         exitEditor: {
             type: Function
+        },
+        editorTask: {
+            type: Function
         }
     },
     name: 'TaskList',
     components: {},
     methods: {
-        taskEditor: function (task) {
-            this.inputId = task.id
-            this.beforeEditCache = task.text
-            this.$refs['taskInput' + task.id][0].focus();
+        taskFocus: function (task) {
+            this.inputId = task.id;
+            this.$nextTick(() => {
+                this.$refs['taskInput' + task.id][0].focus();
+            });
+        },
+        InputNull: function(){
+            this.inputId=null
         }
     }
 }
