@@ -4,11 +4,11 @@
         <li
             v-for="task in tasks" 
             :key="task.id"
-            :class="{completed: task.completed, editing: inputId == task.id }" >
+            :class="{completed: task.completed, editing: inputId==task.id }" >
                 <div class="view">
                     <input class="toggle" type="checkbox" v-model="task.completed">
                     
-                    <label @dblclick="taskFocus(task)">
+                    <label @dblclick="taskEditor(task)">
                         {{task.text}}
                     </label>
 
@@ -16,8 +16,8 @@
                 </div>
 
                 <input
-                    class = "edit"
-                    v-if="inputId == task.id"
+                    class="edit"
+                    v-if="inputId===task.id"
                     :ref="'taskInput' + task.id" 
                     v-model="task.text"
                     @blur="enterEditor(task)"
@@ -33,15 +33,20 @@
 
 export default {
     data(){
-        return{}
+        return{
+            inputId: null,
+            beforeEditCache: null
+        }
     },
-    props: {
-        inputId:{},
+    props: {/*
+        inputId:{
+            type: Object
+        },
+        beforeEditCache:{
+            type: Object
+        },*/
         tasks: {default: []},
         removeTask:{
-            type: Function
-        },
-        editorTask: {
             type: Function
         },
         enterEditor: {
@@ -49,14 +54,17 @@ export default {
         },
         exitEditor: {
             type: Function
-        },
-        taskFocus: {
-            type: Function
         }
     },
     name: 'TaskList',
     components: {},
-    methods: {}
+    methods: {
+        taskEditor: function (task) {
+            this.inputId = task.id
+            this.beforeEditCache = task.text
+            this.$refs['taskInput' + task.id][0].focus();
+        }
+    }
 }
 
 </script>
