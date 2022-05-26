@@ -7,7 +7,9 @@
           <h1>todos</h1>
           <input
             v-model="newTask"
-            v-on:keyup.enter="addTask" 
+            v-on:keyup.enter="addTask"
+            autofocus
+            autocomplete="off"
             class="new-todo"
             placeholder="What needs to be done?"
             value=""
@@ -16,7 +18,12 @@
         <section class="main">
             <input class="toggle-all" type="checkbox" />
             <label for="toggle-all"></label>
-            <TaskList :tasks="tasks" :removeTask="removeTask"/>
+            <TaskList :tasks="tasks" 
+            :removeTask="removeTask"
+            :enterEditor="enterEditor"
+            :exitEditor="exitEditor"
+            :editorTask="editorTask"
+            />
           </section>
       </div>
     </section>
@@ -33,11 +40,31 @@ export default {
   data() {
     return{
       tasks: [],
-      newTask: ""
+      newTask: "",
+      inputId: null,
+      beforeEditCache: null
     }
   },
 
   methods: {
+    editorTask: function(task) {
+      this.beforeEditCache = task.text;
+      this.inputId = task.id;
+    },
+    enterEditor: function(task) {
+      if (!this.inputId) {
+      return;
+      }
+      this.inputId = null;
+      if (!task.text) {
+      this.removeTask(task);
+      }
+    },
+    exitEditor: function(task) {
+      this.inputId = null;
+      task.text = this.beforeEditCache;
+    },
+
     removeTask: function(task) {
       this.tasks.splice(this.tasks.indexOf(task), 1);
     },
