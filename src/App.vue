@@ -26,13 +26,43 @@
             />
           </section>
       </div>
+
+      <footer class="footer" v-show="tasks.length" v-cloak>
+        <span class="todo-count">
+          <strong>{{ countActive() }}</strong> {{pluralSingular()}} left
+        </span>
+        <ul class="filters">
+         
+        </ul>
+        <button class="clear-completed"
+         @click="removeCompleted">
+          Clear completed
+        </button>
+      </footer>
+
     </section>
 
+      
+   
+    <footer class="info">
+      <p>Double-click to edit a todo</p>
+      <p>Refactored by<a href="https://github.com/RatseevTimur">Ratseev Timur</a></p>
+      <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+    
   </div>
 </template>
 
 <script>
 import TaskList from './components/TaskList.vue'
+
+var filters = {
+  active: function(tasks) {
+    return tasks.filter(function(task) {
+      return !task.completed;
+    });
+  }
+};
 
 
 export default {
@@ -42,11 +72,24 @@ export default {
       tasks: [],
       newTask: "",
       inputId: null,
-      beforeEditCache: null
+      beforeEditCache: null,
+      activeFilter: "all"
     }
   },
 
   methods: {
+    removeCompleted: function() {
+     this.tasks = filters.active(this.tasks);
+    },
+    
+    pluralSingular() {
+      const x = ((this.tasks.length > 1) ? "items" : "item");
+      return x;
+    },
+    countActive: function() {
+      return filters.active(this.tasks).length;
+    },
+
     editorTask: function(task) {
       this.beforeEditCache = task.text;
       this.inputId = task.id;
@@ -83,7 +126,7 @@ export default {
         text: value,
         completed: false
       });
-      this.newTask = "";      
+      this.newTask = "";
     }
   },
   components: {
