@@ -23,7 +23,6 @@
             :enterEditor="enterEditor"
             :exitEditor="exitEditor"
             :editorTask="editorTask"
-            :inputId="inputId"
             />
           </section>
       </div>

@@ -4,11 +4,11 @@
         <li
             v-for="task in tasks" 
             :key="task.id"
-            :class="{completed: task.completed, editing: inputId==task.id }" >
+            :class="{completed: task.completed, editing: inputId===task.id }" >
                 <div class="view">
                     <input class="toggle" type="checkbox" v-model="task.completed">
                     
-                    <label @dblclick="editorTask(task) + taskFocus(task)">
+                    <label @dblclick="editorTask(task);taskFocus(task)">
                         {{task.text}}
                     </label>
 
@@ -20,9 +20,9 @@
                     v-if="inputId===task.id"
                     :ref="'taskInput' + task.id" 
                     v-model="task.text"
-                    @blur="enterEditor(task) + InputNull()"
-                    @keyup.enter="enterEditor(task)+ InputNull()"
-                    @keyup.esc="exitEditor(task)+ InputNull()"
+                    @blur="enterEditor(task);resetInput()"
+                    @keyup.enter="enterEditor(task);resetInput()"
+                    @keyup.esc="exitEditor(task);resetInput()"
                 />
         </li>
     </ul>
@@ -62,7 +62,7 @@ export default {
                 this.$refs['taskInput' + task.id][0].focus();
             });
         },
-        InputNull: function(){
+        resetInput: function(){
             this.inputId=null
         }
     }
