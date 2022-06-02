@@ -29,10 +29,10 @@
 
       <footer class="footer" v-show="tasks.length" v-cloak>
         <span class="todo-count">
-          <strong>{{ countActive() }}</strong> {{pluralSingular()}} left
+          <strong>{{ countActive }}</strong> {{pluralSingular}} left
         </span>
         <ul class="filters">
-         
+
         </ul>
         <button class="clear-completed"
          @click="removeCompleted">
@@ -56,15 +56,6 @@
 <script>
 import TaskList from './components/TaskList.vue'
 
-var filters = {
-  active: function(tasks) {
-    return tasks.filter(function(task) {
-      return !task.completed;
-    });
-  }
-};
-
-
 export default {
   name: 'App',
   data() {
@@ -72,24 +63,14 @@ export default {
       tasks: [],
       newTask: "",
       inputId: null,
-      beforeEditCache: null,
-      activeFilter: "all"
+      beforeEditCache: null
     }
   },
 
   methods: {
     removeCompleted: function() {
-     this.tasks = filters.active(this.tasks);
+     this.tasks = this.tasks.filter((task) => !task.completed)
     },
-    
-    pluralSingular() {
-      const x = ((this.tasks.length > 1) ? "items" : "item");
-      return x;
-    },
-    countActive: function() {
-      return filters.active(this.tasks).length;
-    },
-
     editorTask: function(task) {
       this.beforeEditCache = task.text;
       this.inputId = task.id;
@@ -127,6 +108,16 @@ export default {
         completed: false
       });
       this.newTask = "";
+    }
+  },
+  computed: {
+    pluralSingular: function() {
+      const x = ((this.tasks.length > 1) ? "items" : "item");
+      return x;
+    },
+    countActive: function() {
+      this.tasks.filter((task) => !task.completed)
+      return (this.tasks).length;
     }
   },
   components: {
