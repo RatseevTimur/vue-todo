@@ -23,6 +23,7 @@
             :enterEditor="enterEditor"
             :exitEditor="exitEditor"
             :editorTask="editorTask"
+            :filteredTasks="filteredTasks"
             />
           </section>
       </div>
@@ -135,14 +136,12 @@ export default {
       this.tasks.filter((task) => !task.completed)
       return (this.tasks).length;
     },
-    filteredTasks() {
+    filteredTasks(){
       if (this.pageURL == "/active") {
-       this.tasks.filter((task) => task.completed)
-        return (this.tasks)
+      return (this.tasks.filter((task) => !task.completed))
       }
       if (this.pageURL == "/completed") {
-        this.tasks.filter((task) => !task.completed)
-        return (this.tasks)
+       return (this.tasks.filter((task) => task.completed))
       }
       return (this.tasks) 
     },

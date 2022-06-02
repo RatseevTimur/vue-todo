@@ -4,7 +4,11 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-const routes = [{ path: "/", component: App }];
+const routes = [
+  { path: "/all", component: App },
+  { path: "/active", component: App },
+  { path: "/completed", component: App }
+];
 
 const router = new VueRouter({
   routes

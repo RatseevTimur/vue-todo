@@ -2,7 +2,7 @@
 
     <ul class="todo-list">
         <li
-            v-for="task in tasks" 
+            v-for="task in filteredTasks" 
             :key="task.id"
             :class="{completed: task.completed, editing: inputId===task.id }" >
                 <div class="view">
@@ -51,6 +51,12 @@ export default {
         },
         editorTask: {
             type: Function
+        },
+        filteredTasks: {
+            type: Array,
+            default() {
+            return []
+            }
         }
     },
     name: 'TaskList',
