@@ -33,6 +33,22 @@
         </span>
         <ul class="filters">
 
+           <li>
+						<router-link :class="{selected: this.pageURL == '/all'}"
+            to="/all"
+            >All</router-link>
+					</li>
+					<li>
+						<router-link :class="{selected: this.pageURL == '/active'}" 
+            to="/active"
+            >Active</router-link>
+					</li>
+					<li>
+						<router-link :class="{selected: this.pageURL == '/completed'}"
+            to="/completed"
+            >Completed</router-link>
+					</li>
+
         </ul>
         <button class="clear-completed"
          @click="removeCompleted">
@@ -118,6 +134,20 @@ export default {
     countActive: function() {
       this.tasks.filter((task) => !task.completed)
       return (this.tasks).length;
+    },
+    filteredTasks() {
+      if (this.pageURL == "/active") {
+       this.tasks.filter((task) => task.completed)
+        return (this.tasks)
+      }
+      if (this.pageURL == "/completed") {
+        this.tasks.filter((task) => !task.completed)
+        return (this.tasks)
+      }
+      return (this.tasks) 
+    },
+    pageURL() {
+      return this.$route.path
     }
   },
   components: {
