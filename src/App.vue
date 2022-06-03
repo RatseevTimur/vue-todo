@@ -28,34 +28,14 @@
           </section>
       </div>
 
-      <footer class="footer" v-show="tasks.length" v-cloak>
-        <span class="todo-count">
-          <strong>{{ countActive }}</strong> {{pluralSingular}} left
-        </span>
-        <ul class="filters">
-
-           <li>
-						<router-link :class="{selected: this.pageURL == '/all'}"
-            to="/all"
-            >All</router-link>
-					</li>
-					<li>
-						<router-link :class="{selected: this.pageURL == '/active'}" 
-            to="/active"
-            >Active</router-link>
-					</li>
-					<li>
-						<router-link :class="{selected: this.pageURL == '/completed'}"
-            to="/completed"
-            >Completed</router-link>
-					</li>
-
-        </ul>
-        <button class="clear-completed"
-         @click="removeCompleted">
-          Clear completed
-        </button>
-      </footer>
+      <FilterFooter></FilterFooter>
+      <FilterFooter :tasks="tasks" 
+        :removeCompleted="removeCompleted"
+        :pluralSingular="pluralSingular"
+        :countActive="countActive"
+        :pageURL="pageURL"
+        :filteredTasks="filteredTasks"
+      />
 
     </section>
 
@@ -72,6 +52,7 @@
 
 <script>
 import TaskList from './components/TaskList.vue'
+import FilterFooter from './components/FilterFooter.vue'
 
 export default {
   name: 'App',
@@ -85,13 +66,16 @@ export default {
   },
 
   methods: {
+    //Удаляет выполненные задачи при нажатии на "Clear completed"
     removeCompleted: function() {
      this.tasks = this.tasks.filter((task) => !task.completed)
     },
+    //Корректировка задач
     editorTask: function(task) {
-      this.beforeEditCache = task.text;
+      this.beforeEditCache = task.text; //Временно сохраняет прежнее значение задачи
       this.inputId = task.id;
     },
+    //Ввод корректировки
     enterEditor: function(task) {
       if (!this.inputId) {
       return;
@@ -101,19 +85,22 @@ export default {
       this.removeTask(task);
       }
     },
+    //Выход из корректировки и отмена изменений
     exitEditor: function(task) {
       this.inputId = null;
-      task.text = this.beforeEditCache;
+      task.text = this.beforeEditCache; //Возвращает прежнее значение задачи
     },
-
+    //Удаляет задачи при нажатии на крестик
     removeTask: function(task) {
       this.tasks.splice(this.tasks.indexOf(task), 1);
     },
+    //Создает новый id для новой задачи
     createNewId() {
-      let maxId = Math.max(...this.tasks.map(i => i.id));
-      let newId = (maxId > 0) ? maxId+1 : 1
+      let maxId = Math.max(...this.tasks.map(i => i.id)); //Определяет максимальный id в массиве
+      let newId = (maxId > 0) ? maxId+1 : 1 //Добавляет 1 к максимальному id, если же массив пуст, выводит 1
       return(newId);
     },
+    //Добавляет новую задачу в массив
     addTask: function (){
       let value = this.newTask.trim();
         if (!value) {
@@ -128,14 +115,17 @@ export default {
     }
   },
   computed: {
+    //Определяет чеслитель для слова item или items
     pluralSingular: function() {
       const x = ((this.tasks.length > 1) ? "items" : "item");
       return x;
     },
+    //Считает активные задачи
     countActive: function() {
       this.tasks.filter((task) => !task.completed)
       return (this.tasks).length;
     },
+    //Фильтрует отрисовку задач по условию активного "vue-router"
     filteredTasks(){
       if (this.pageURL == "/active") {
       return (this.tasks.filter((task) => !task.completed))
@@ -145,12 +135,14 @@ export default {
       }
       return (this.tasks) 
     },
+    //Определяет активный "vue-router"
     pageURL() {
       return this.$route.path
     }
   },
   components: {
-    TaskList
+    TaskList,
+    FilterFooter
   }
 }
 </script>
