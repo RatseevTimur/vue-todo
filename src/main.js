@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App";
 import VueRouter from "vue-router";
 import Register from "./Register";
-import Todo from "./TodoList";
+import Todo from "./Todo";
 
 Vue.use(VueRouter);
 
