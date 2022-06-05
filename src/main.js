@@ -1,20 +1,21 @@
 import Vue from "vue";
 import App from "./App";
 import VueRouter from "vue-router";
+import Register from "./Register";
+import Todo from "./TodoList";
 
 Vue.use(VueRouter);
 
 const routes = [
-  { path: "/all", component: App },
-  { path: "/active", component: App },
-  { path: "/completed", component: App }
+  { path: "/register", component: Register },
+  { path: "/all", component: Todo },
+  { path: "/completed", component: Todo },
+  { path: "/active", component: Todo },
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
 });
-
-router.replace({ path: '/all' })//Возвращает '/all' для "vue-router" при обновлении стриницы
 
 Vue.config.productionTip = false;
 

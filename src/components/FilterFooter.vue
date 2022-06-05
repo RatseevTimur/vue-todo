@@ -1,67 +1,70 @@
 <template>
 
-<footer class="footer" v-show="tasks.length" v-cloak>
+  <footer class="footer" v-show="tasks.length" v-cloak>
         <span class="todo-count">
-          <strong>{{ countActive }}</strong> {{pluralSingular}} left
+          <strong>{{ countActive }}</strong> {{ pluralSingular }} left
         </span>
-        <ul class="filters">
+    <ul class="filters">
 
-           <li>
-						<router-link :class="{selected: this.pageURL == '/all'}"
-            to="/all"
-            >All</router-link>
-					</li>
-					<li>
-						<router-link :class="{selected: this.pageURL == '/active'}" 
-            to="/active"
-            >Active</router-link>
-					</li>
-					<li>
-						<router-link :class="{selected: this.pageURL == '/completed'}"
-            to="/completed"
-            >Completed</router-link>
-					</li>
+      <li>
+        <router-link :class="{selected: this.pageURL === '/all'}"
+                     to="/all"
+        >All
+        </router-link>
+      </li>
+      <li>
+        <router-link :class="{selected: this.pageURL === '/active'}"
+                     to="/active"
+        >Active
+        </router-link>
+      </li>
+      <li>
+        <router-link :class="{selected: this.pageURL === '/completed'}"
+                     to="/completed"
+        >Completed
+        </router-link>
+      </li>
 
-        </ul>
-        <button class="clear-completed"
-         @click="removeCompleted()">
-          Clear completed
-        </button>
-      </footer>
+    </ul>
+    <button class="clear-completed"
+            @click="removeCompleted()">
+      Clear completed
+    </button>
+  </footer>
 
 </template>
 
 <script>
 
 export default {
-    data(){
-        return{}
+  data() {
+    return {}
+  },
+  props: {
+    tasks: {
+      type: Array,
+      default() {
+        return []
+      }
     },
-    props: {
-        tasks: {
-            type: Array,
-            default() {
-            return []
-            }
-        },
-        removeCompleted: {
-            type: Function
-        },
-        pluralSingular: {
-            type: String
-        },
-        countActive: {
-            type: Number
-        },
-        pageURL: {
-            type: String
-        },
-        filteredTasks:{
-            type: Array
-        }
-      
+    removeCompleted: {
+      type: Function
     },
-    name: 'FilterFooter'
+    pluralSingular: {
+      type: String
+    },
+    countActive: {
+      type: Number
+    },
+    pageURL: {
+      type: String
+    },
+    filteredTasks: {
+      type: Array
+    }
+
+  },
+  name: 'FilterFooter'
 }
 
 </script>
