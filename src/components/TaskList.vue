@@ -2,7 +2,7 @@
 
     <ul class="todo-list">
         <li
-            v-for="task in tasks" 
+            v-for="task in filteredTasks"
             :key="task.id"
             :class="{completed: task.completed, editing: inputId===task.id }" >
                 <div class="view">
@@ -51,17 +51,24 @@ export default {
         },
         editorTask: {
             type: Function
+        },
+        filteredTasks: {
+            type: Array,
+            default() {
+            return []
+            }
         }
     },
     name: 'TaskList',
-    components: {},
     methods: {
+        //Функция выполняющая фокус на Input при редактировании задачи
         taskFocus: function (task) {
             this.inputId = task.id;
             this.$nextTick(() => {
                 this.$refs['taskInput' + task.id][0].focus();
             });
         },
+        //Обнуляет inputId
         resetInput: function(){
             this.inputId=null
         }
