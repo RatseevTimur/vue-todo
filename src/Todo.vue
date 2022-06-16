@@ -28,7 +28,6 @@
           </section>
       </div>
 
-      <FilterFooter></FilterFooter>
       <FilterFooter :tasks="tasks"
         :removeCompleted="removeCompleted"
         :pluralSingular="pluralSingular"
@@ -111,6 +110,14 @@ export default {
         completed: false
       });
       this.newTask = "";
+    }
+  },
+  mounted() {
+    this.tasks = JSON.parse(localStorage.getItem("tasks")) || []
+  },
+  watch: {
+    tasks(tasks) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
   },
   computed: {
@@ -516,7 +523,7 @@ html .clear-completed:active {
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 4300px) {
   .footer {
     height: 50px;
   }
